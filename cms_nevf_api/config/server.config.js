@@ -2,7 +2,7 @@ import Express from "express";
 import cors from "cors";
 import helmet from "helmet";
 // import DbConfig from "./db.config";
-import { RateLimiterConfig } from ".";
+// import { RateLimiterConfig } from ".";
 import morgan from "morgan";
 import paginate from "express-paginate";
 import { ConfigService, FirebaseService } from "../services";
@@ -12,11 +12,11 @@ export default class ServerConfig {
     constructor({ port, middlewares, routers }) {
         this.app = Express();
         this.app.set("env", ConfigService.NODE_ENV);
-        this.app.set("env", process.env.NODE_ENV);
+        // this.app.set("env", process.env.NODE_ENV);
         this.app.set("port", port);
         this.registerCORSMiddleware()
             .registerHelmetMiddleware()
-            .registerRateLimiter()
+            // .registerRateLimiter()
             .registerMorganMiddleware()
             // .registerAuthenticationMiddleware()
             .registerJSONMiddleware()
@@ -125,18 +125,18 @@ export default class ServerConfig {
     /**
   * Register Rate Limiter middleware to prevent Denial of Service (DoS) attacks
   */
-    registerRateLimiter() {
+    // registerRateLimiter() {
 
-        const rateLimitConf = new RateLimiterConfig({
-            maxRequests: ConfigService.get("RATE_LIMIT_MAX_REQUESTS"),
-            windowMs: ConfigService.get("RATE_LIMIT_WINDOW_MS")
-        });
+    //     const rateLimitConf = new RateLimiterConfig({
+    //         maxRequests: ConfigService.get("RATE_LIMIT_MAX_REQUESTS"),
+    //         windowMs: ConfigService.get("RATE_LIMIT_WINDOW_MS")
+    //     });
 
-        const limiter = rateLimitConf.apiRateLimiter;
+    //     const limiter = rateLimitConf.apiRateLimiter;
 
-        this.registerMiddleware(limiter);
-        return this;
-    }
+    //     this.registerMiddleware(limiter);
+    //     return this;
+    // }
 
     /**
      * register the Express Error Handling middleware
@@ -166,7 +166,8 @@ export default class ServerConfig {
             // await dbConf.connectDb();
 
             return this.app.listen(this.port, () => {
-                console.log(`Listening on port: ${this.port} in ${ConfigService.get("NODE_ENV")}`);
+                console.log(`Listening on port: ${this.port}`);
+                // console.log(`Listening on port: ${this.port} in ${ConfigService.get("NODE_ENV")}`);
             });
         } catch (error) {
             console.error(` Error: ${error.message}`);

@@ -212,7 +212,9 @@
         <b-form-select id="input-role" v-model="inviteAs" :options="roles" required></b-form-select>
       </b-form-group>
 
-      <p>Note:</p>
+      <h5>Note:</h5> 
+      <p>User Name: email address</p>
+      <p>Password: "cms123" will be used for invited user! </p>
     </b-modal>
   </b-container>
 </template>

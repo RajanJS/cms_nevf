@@ -17,11 +17,13 @@ export default class AuthController {
         const { email, password } = req.body;
         const userInfo = await this.userAuthService.loginUser(email, password, next);
 
-        res.status(userInfo ? 200 : 401).json({
-            ...(userInfo
-                ? { userInfo: userInfo }
-                : { message: "Authentication failed" })
-        });
+        if (userInfo) {
+            return res.status(userInfo ? 200 : 401).json({
+                ...(userInfo
+                    ? { userInfo: userInfo }
+                    : { message: "Authentication failed" })
+            });
+        }
     }
 
     async getUser(req, res, next) {

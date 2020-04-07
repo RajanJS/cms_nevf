@@ -56,7 +56,7 @@ export default class UserAuthService {
         return this.#firebaseService.client.auth().signInWithEmailAndPassword(email, password).then(function (user) {
             return user;
         }).catch(function (error) {
-            return next(errorHandler(error.message, 400));
+            return next(errorHandler(error.message));
         });
 
         // return loggedIn;
