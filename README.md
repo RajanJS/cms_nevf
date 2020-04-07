@@ -10,6 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 - [Node.js](https://nodejs.org/en/docs/) - Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine
 - [Express](https://expressjs.com/) - Fast, unopinionated, minimalist web framework for Node.js
+- [Swagger](https://swagger.io/) - Simplify API development for users, teams, and enterprises with the Swagger open source and professional toolset.
 - [Vue.js](https://vuejs.org/) - The Progressive JavaScript Framework
 - [Bootstrap.vue](https://bootstrap-vue.js.org/) - With BootstrapVue you can build responsive, mobile-first, and ARIA accessible projects on the web using Vue.js and the world's most popular front-end CSS library — Bootstrap v4.
 - [Firebase Authentication](https://firebase.google.com/docs/auth) - Firebase Authentication provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
