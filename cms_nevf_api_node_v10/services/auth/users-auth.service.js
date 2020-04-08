@@ -1,29 +1,22 @@
-import ConfigService from "../config.service";
-import FirebaseService from '../firebase.service';
-import { UserRoles, errorHandler } from '../../utils';
 
-export default class UserAuthService {
-    #configService;
-    #firebaseService;
+const FirebaseService = require('../../services/firebase.service');
+const { UserRoles, errorHandler } = require('../../utils');
 
-    constructor() {
-        this.#firebaseService = FirebaseService;
-        this.#configService = ConfigService;
+module.exports = function UserAuthService() {
 
-    }
-
+    this.firebaseService = FirebaseService;
     /**
      *
      * @param {*} user
      */
-    async createUser(user) {
+    this.createUser = async function (user) {
         if (!user || !user.email || !user.password || !user.firstName) throw new Error("Please provide valid user");
         if (!user.isAdmin && !user.userId) throw new Error("Please provide valid user");
 
         const usr = user;
         usr.displayName = `${user.firstName} ${user.lastName}`;
 
-        const insertedUser = await this.#firebaseService.admin.auth().createUser(usr);
+        const insertedUser = await this.firebaseService.admin.auth().createUser(usr);
         const customClaims = {
             role: UserRoles.Normal
         };
@@ -36,7 +29,7 @@ export default class UserAuthService {
             customClaims.userId = usr.userId;
         }
 
-        await this.#firebaseService.admin.auth().setCustomUserClaims(insertedUser.uid, customClaims);
+        await this.firebaseService.admin.auth().setCustomUserClaims(insertedUser.uid, customClaims);
 
         return insertedUser;
 
@@ -47,13 +40,13 @@ export default class UserAuthService {
      * @param {string} email
      * @param {string} password
      */
-    async loginUser(email, password, next) {
+    this.loginUser = async function (email, password, next) {
 
         if (!email | !password) return null;
 
-        // const user = await firebaseService.admin.auth().getUserByEmail(email);
+        // const user = await this.firebaseService.admin.auth().getUserByEmail(email);
 
-        return this.#firebaseService.client.auth().signInWithEmailAndPassword(email, password).then(function (user) {
+        return this.firebaseService.client.auth().signInWithEmailAndPassword(email, password).then(function (user) {
             return user;
         }).catch(function (error) {
             return next(errorHandler(error.message));
@@ -66,11 +59,11 @@ export default class UserAuthService {
     *
     * @param {String} uid
     */
-    async getUser(uid) {
+    this.getUser = async function (uid) {
 
         if (!uid) return null;
 
-        const userInfo = await this.#firebaseService.admin.auth().getUser(uid);
+        const userInfo = await this.firebaseService.admin.auth().getUser(uid);
 
         return userInfo;
     }
@@ -79,11 +72,11 @@ export default class UserAuthService {
     *
     * @param {String} uid
     */
-    async getUserByEmail(email) {
+    this.getUserByEmail = async function (email) {
 
         if (!email) return null;
 
-        const userInfo = await this.#firebaseService.admin.auth().getUserByEmail(email);
+        const userInfo = await this.firebaseService.admin.auth().getUserByEmail(email);
 
         return userInfo;
     }
@@ -92,11 +85,11 @@ export default class UserAuthService {
     *
     * @param {String} uid
     */
-    async updateUser(uid, updatedData) {
+    this.updateUser = async function (uid, updatedData) {
 
         if (!updatedData) return null;
 
-        const userInfo = await this.#firebaseService.admin.auth().updateUser(uid, updatedData);
+        const userInfo = await this.firebaseService.admin.auth().updateUser(uid, updatedData);
 
         return userInfo;
     }
@@ -106,9 +99,9 @@ export default class UserAuthService {
     * @param {String} uid
     * @param {import("express").NextFunction} next
     */
-    async deleteUser(uid, next) {
+    this.deleteUser = async function (uid, next) {
 
-        return this.#firebaseService.admin.auth().deleteUser(uid).then(function () {
+        return this.firebaseService.admin.auth().deleteUser(uid).then(function () {
             return true;
         }).catch(function (error) {
             return next(errorHandler(error.message));
@@ -120,10 +113,10 @@ export default class UserAuthService {
      *
      * @param {object} req
      */
-    async getUsers(userId) {
+    this.getUsers = async function (userId) {
 
         const filteredUsers = [];
-        await this.#firebaseService.admin.auth().listUsers()
+        await this.firebaseService.admin.auth().listUsers()
             .then(function (listUsersResult) {
                 listUsersResult.users.forEach(function (userRecord) {
                     let user = userRecord.toJSON();

@@ -1,7 +1,7 @@
-import * as AuthMiddleware from "./auth.middleware";
-import SwaggerMiddleware from "./swagger.middleware";
+const AuthMiddleware = require("./auth.middleware");
+const SwaggerMiddleware = require("./swagger.middleware");
 
-export {
+module.exports = {
     AuthMiddleware,
     SwaggerMiddleware
 };

@@ -1,5 +1,5 @@
-import FirebaseService from '../services/firebase.service';
-export const getAuthToken = (req, res, next) => {
+const services = require("../services");
+const getAuthToken = (req, res, next) => {
     if (
         req.headers.authorization &&
         req.headers.authorization.split(' ')[0] === 'Bearer'
@@ -11,13 +11,14 @@ export const getAuthToken = (req, res, next) => {
     next();
 };
 
-export const checkIfAuthenticated = (req, res, next) => {
+const checkIfAuthenticated = (req, res, next) => {
+    let firebaseService = new services.firebaseService();
     return getAuthToken(req, res, async () => {
         try {
             const { authToken } = req;
             if (!authToken) throw new Error('You are not authorized to make this request');
 
-            const userInfo = await FirebaseService.admin.auth().verifyIdToken(authToken);
+            const userInfo = await firebaseService.admin.auth().verifyIdToken(authToken);
 
             req.authId = userInfo.uid;
             return next();
@@ -36,7 +37,7 @@ export const checkIfAuthenticated = (req, res, next) => {
 * roles param can be a single role string (e.g. Role.User or 'User')
 * or an array of roles (e.g. ['Admin', 'User'])
 */
-export const authorize = (roles = []) => {
+const authorize = (roles = []) => {
 
     if (typeof roles === 'string') {
         roles = [roles];
@@ -68,4 +69,10 @@ export const authorize = (roles = []) => {
                 .send({ message: e.message ? e.message : 'You are not authorized to make this request' });
         }
     });
+}
+
+module.exports = {
+    getAuthToken,
+    authorize,
+    checkIfAuthenticated
 }

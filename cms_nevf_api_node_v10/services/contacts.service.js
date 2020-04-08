@@ -1,17 +1,17 @@
-import { errorHandler, generateSelf } from "../utils";
-import ConfigService from "./config.service";
-import FirebaseService from './firebase.service';
+const { errorHandler, generateSelf } = require("../utils");
+const firebaseService = require("../services/firebase.service");
 
-export default class ContactsService {
-    #batch = FirebaseService.db.batch();
-    #dbCollection = FirebaseService.db.collection('contacts');
+module.exports = function ContactsService() {
+
+    this.batch = firebaseService.db.batch();
+    this.dbCollection = firebaseService.db.collection('contacts');
 
     /**
      *
      * @param {object[]} contacts
      * @param {string} url
      */
-    generateLinkedContacts(contacts, url) {
+    this.generateLinkedContacts = function (contacts, url) {
         return {
             data: contacts.map(contact => ({
                 data: contact,
@@ -30,9 +30,9 @@ export default class ContactsService {
      * @param {import("express").NextFunction} next
      *
      */
-    async findContacts(limit, offset, filterIds, next) {
+    this.findContacts = async function (limit, offset, filterIds, next) {
 
-        let docLength = await (await this.#dbCollection.where('userId', 'in', filterIds).get()).size;
+        let docLength = await (await this.dbCollection.where('userId', 'in', filterIds).get()).size;
 
         const totalPages = limit ? Math.round(docLength / limit) : 0;
 
@@ -53,7 +53,7 @@ export default class ContactsService {
 
 
         const contacts = [];
-        const contactRef = await this.#dbCollection.where('userId', 'in', filterIds).limit(limit).offset(offset).get()
+        const contactRef = await this.dbCollection.where('userId', 'in', filterIds).limit(limit).offset(offset).get()
             .then(snapshot => {
                 snapshot.forEach(doc => {
                     contacts.push({
@@ -72,9 +72,9 @@ export default class ContactsService {
     /**
       * @param {*} contactId
       */
-    async getContact(contactId) {
+    this.getContact = async function (contactId) {
 
-        const contact = await (await this.#dbCollection.doc(contactId).get()).data();
+        const contact = await (await this.dbCollection.doc(contactId).get()).data();
         return { id: contactId, ...contact };
     }
 
@@ -83,9 +83,9 @@ export default class ContactsService {
     * @param {*} contactData
     * @param {import("express").NextFunction} next
     */
-    async postUserContact(contactData, next) {
+    this.postUserContact = async function (contactData, next) {
         // validate if contact with given email already exist
-        const checkIfExist = await (await this.#dbCollection.where('email', '==', contactData.email).get()).docs.length;
+        const checkIfExist = await (await this.dbCollection.where('email', '==', contactData.email).get()).docs.length;
 
         if (checkIfExist) {
             return next(errorHandler('Contact with given email already exist'));
@@ -94,7 +94,7 @@ export default class ContactsService {
         contactData.timestamp = + new Date();
         contactData.inviteStatus = false;
 
-        const newContact = await (await (await this.#dbCollection.add(contactData)).get()).data();
+        const newContact = await (await (await this.dbCollection.add(contactData)).get()).data();
         return newContact;
     }
 
@@ -104,16 +104,16 @@ export default class ContactsService {
      * @param {*} updateContactData
      * @param {*} next
      */
-    async putUserContact(contactId, updateContactData, next) {
+    this.putUserContact = async function (contactId, updateContactData, next) {
         // check contact id in logged user contacts
-        const checkIfExist = await (await this.#dbCollection.doc(contactId).get()).data();
+        const checkIfExist = await (await this.dbCollection.doc(contactId).get()).data();
 
         if (!checkIfExist) {
             return next(errorHandler(`Contact doesn't exist`));
         }
 
         if (checkIfExist) {
-            const result = await this.#dbCollection.doc(contactId).update(updateContactData);
+            const result = await this.dbCollection.doc(contactId).update(updateContactData);
 
             return result;
         }
@@ -124,15 +124,15 @@ export default class ContactsService {
      * @param {*} contactId
      * @param {*} next
      */
-    async deleteUserContact(contactId, next) {
+    this.deleteUserContact = async function (contactId, next) {
 
-        const checkIfExist = await (await this.#dbCollection.doc(contactId).get()).data();
+        const checkIfExist = await (await this.dbCollection.doc(contactId).get()).data();
 
         if (!checkIfExist) {
             return next(errorHandler(`Contact doesn't exist`));
         }
 
-        return await this.#dbCollection.doc(contactId).delete();
+        return await this.dbCollection.doc(contactId).delete();
     }
 
     /**
@@ -140,9 +140,9 @@ export default class ContactsService {
   * @param {*} contactId
   * @param {*} next
   */
-    async deleteAllContacts(next) {
-        const querySnapshot = await this.#dbCollection.get();
-        querySnapshot.forEach(doc => this.#batch.delete(doc.ref));
-        return this.#batch.commit();
+    this.deleteAllContacts = async function (next) {
+        const querySnapshot = await this.dbCollection.get();
+        querySnapshot.forEach(doc => this.batch.delete(doc.ref));
+        return this.batch.commit();
     }
 }

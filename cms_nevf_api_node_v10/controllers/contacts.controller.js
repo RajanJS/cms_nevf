@@ -1,7 +1,7 @@
-import { errorHandler } from "../utils";
-import { ContactService } from '../services';
+const { errorHandler } = require("../utils");
+const services = require('../services');
 
-const contactService = new ContactService();
+const contactService = new services.ContactService();
 
 const getContacts = async (req, res, next) => {
     const url = `${req.protocol}://${req.hostname}:${req.app.get("port")}`;
@@ -87,7 +87,7 @@ const deleteAllContact = async (req, res, next) => {
         : next(errorHandler("No data deleted"));
 };
 
-export {
+module.exports = {
     getContacts,
     getContact,
     postContact,

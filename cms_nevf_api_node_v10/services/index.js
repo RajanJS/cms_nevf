@@ -1,9 +1,7 @@
-import ConfigService from "./config.service";
-import FirebaseService from "./firebase.service";
-import ContactService from "./contacts.service";
+const FirebaseService = require("./firebase.service");
+const ContactService = require("./contacts.service");
 
-export {
-    ConfigService,
+module.exports = {
     FirebaseService,
     ContactService
 };

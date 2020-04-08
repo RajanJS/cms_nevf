@@ -1,10 +1,9 @@
-import { Router } from "express";
-import { AuthController } from "../../controllers";
-import { AsyncWrapper, UserRoles } from "../../utils";
-import { AuthMiddleware } from "../../middlewares";
+const { Router } = require("express");
+const controller = require("../controllers");
+const { AsyncWrapper, UserRoles } = require('../utils');
 
 const router = Router();
-const authController = new AuthController();
+const authController = new controller.AuthController();
 
 // POST /auth/register
 router.post(
@@ -18,7 +17,7 @@ router.post(
     AsyncWrapper(authController.loginUser.bind(authController))
 );
 
-export const authRouter = {
+exports.authRouter = {
     baseUrl: "/auth",
     router
 };

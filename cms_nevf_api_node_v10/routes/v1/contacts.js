@@ -1,56 +1,54 @@
 // use aliases to avoid name conflicts
-import { contacts as v1 } from "../../controllers";
-import { CorsConfig } from "../../config";
-import { AsyncWrapper, UserRoles } from "../../utils";
-import { ConfigService } from "../../services";
-import { AuthMiddleware } from "../../middlewares";
+const { contacts } = require("../../controllers");
+const { AsyncWrapper, UserRoles } = require("../../utils");
+const { ConfigService } = require("../../services");
+const { AuthMiddleware } = require("../../middlewares");
 
-export default router => {
-    const corsConf = new CorsConfig(ConfigService.get("CORS_WHITELIST"));
+module.exports = router => {
 
     // GET /api/v1/contacts
     router.get(
         "/contacts",
         (res, req, next) => corsConf.setAsyncConfig()(res, req, next),
         AuthMiddleware.authorize([UserRoles.Admin, UserRoles.Normal]),
-        AsyncWrapper(v1.getContacts)
+        AsyncWrapper(contacts.getContacts)
     );
 
     // GET /api/v2/contacts/full
-    // router.get("/contacts/full", AsyncWrapper(v1.getContacts));
+    // router.get("/contacts/full", AsyncWrapper(contacts.getContacts));
 
     // GET /api/v1/contacts/:id
     router.get(
         "/contacts/:id",
         AuthMiddleware.authorize([UserRoles.Admin, UserRoles.Normal]),
-        AsyncWrapper(v1.getContact)
+        AsyncWrapper(contacts.getContact)
     );
 
     // POST /api/v1/contacts
     router.post(
         "/contacts",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(v1.postContact)
+        AsyncWrapper(contacts.postContact)
     );
 
     // PUT /api/v1/contacts/:id
     router.put(
         "/contacts/:id",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(v1.putContact)
+        AsyncWrapper(contacts.putContact)
     );
 
     // DELETE /api/v1/contacts/:id
     router.delete(
         "/contacts/:id",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(v1.deleteContact)
+        AsyncWrapper(contacts.deleteContact)
     );
 
     // DELETE /api/v1/contacts
     router.delete(
         "/contacts",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(v1.deleteAllContact)
+        AsyncWrapper(contacts.deleteAllContact)
     );
 };

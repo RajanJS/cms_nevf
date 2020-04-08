@@ -1,11 +1,25 @@
-import ServerConfig from "./server.config";
-// import DbConfig from "./db.config";
-import CorsConfig from "./cors.config";
-import RateLimiterConfig from "./limiter.config";
+/**
+ * @author [Rajan]
+ * This module loads a config file in the current working directory matching the NODE_ENV variable.
+ * i.e. either './development.js' or './production.js' based on the process.env.NODE_ENV variable
+ * If not set, it defaults to './development.js'.
+ * Can load custom environment files as well, as long as the NODE_ENV variable matches a file in the current directory.
+ * E.g. './development.js' , './production.js'
+ * Usage: calling code can just require this module, e.g. "var config = require('./config')"
+ * assuming this file is named "index.js" and lives in a subdirectory named "config" of the app root.
+ */
 
-export {
-    ServerConfig,
-    // DbConfig, 
-    CorsConfig,
-    RateLimiterConfig
-};
+let config;
+const config_file = './' + (process.env.NODE_ENV ? process.env.NODE_ENV : 'dev') + '.env.config';
+
+try {
+    config = require(config_file);
+} catch (err) {
+    if (err.code && err.code === 'MODULE_NOT_FOUND') {
+        console.error('No config file matching NODE_ENV = ' + process.env.NODE_ENV + '. Requires "' + __dirname + '/' + process.env.NODE_ENV + 'env.config.js"');
+        process.exit(1);
+    } else {
+        throw err;
+    }
+}
+module.exports = config;

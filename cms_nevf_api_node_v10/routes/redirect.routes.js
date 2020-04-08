@@ -1,4 +1,4 @@
-import { Router } from "express";
+const { Router } = require("express");
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.all("/users*", (req, res) => {
     res.redirect(308, `/api/v1${req.url}`);
 });
 
-export const redirectRouter = {
+exports.redirectRouter = {
     baseUrl: "/",
     router
 };

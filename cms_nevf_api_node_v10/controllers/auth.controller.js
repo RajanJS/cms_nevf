@@ -1,19 +1,19 @@
-import UserAuthService from "../services/auth/users-auth.service";
-import { errorHandler } from '../utils';
+const UserAuthService = require("../services/auth/users-auth.service");
+const { errorHandler } = require('../utils');
 
-export default class AuthController {
-    constructor() {
-        this.userAuthService = new UserAuthService();
-    }
 
-    async createUser(req, res, next) {
+module.exports = function UserAuthController() {
+
+    this.userAuthService = new UserAuthService();
+
+    this.createUser = async function (req, res, next) {
         const user = await this.userAuthService.createUser(req.body);
         return res.json({
             userInfo: user
         });
-    }
+    };
 
-    async loginUser(req, res, next) {
+    this.loginUser = async function (req, res, next) {
         const { email, password } = req.body;
         const userInfo = await this.userAuthService.loginUser(email, password, next);
 
@@ -24,9 +24,9 @@ export default class AuthController {
                     : { message: "Authentication failed" })
             });
         }
-    }
+    };
 
-    async getUser(req, res, next) {
+    this.getUser = async function (req, res, next) {
         let uid = req.params.id;
         let email = req.body.email;
         let userInfo;
@@ -48,9 +48,9 @@ export default class AuthController {
                 ? userInfo
                 : { message: "You are not authorized to make this request" })
         });
-    }
+    };
 
-    async getUsers(req, res, next) {
+    this.getUsers = async function (req, res, next) {
 
         const userId = req.headers.uid;
         const users = await this.userAuthService.getUsers(userId);
@@ -64,7 +64,7 @@ export default class AuthController {
         });
     }
 
-    async updateUser(req, res, next) {
+    this.updateUser = async function (req, res, next) {
         let uid = req.params.id;
         let updatedData = req.body;
 
@@ -74,9 +74,9 @@ export default class AuthController {
 
         const user = await this.userAuthService.updateUser(uid, req.body);
         return res.json({ user });
-    }
+    };
 
-    async deleteUser(req, res, next) {
+    this.deleteUser = async function (req, res, next) {
 
         const uid = req.params.id;
         uid || next(errorHandler("Please enter a user id", 422));
@@ -85,6 +85,5 @@ export default class AuthController {
 
         result ? res.json({ message: "User deleted" })
             : next(errorHandler("No data deleted"));
-
     };
 }

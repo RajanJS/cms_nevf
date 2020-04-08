@@ -3,7 +3,7 @@
  * @param {*} entity
  * @param {string} url
  */
-export const generateSelf = ({ url, entity }) => {
+exports.generateSelf = ({ url, entity }) => {
     const self = [
         {
             href: `${url}/api/v1/contacts${entity ? `/${entity.id}` : "{?offset,limit}"}`,

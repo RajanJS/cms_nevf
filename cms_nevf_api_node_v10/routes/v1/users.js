@@ -1,12 +1,10 @@
-import { AuthController } from "../../controllers";
-import { CorsConfig } from "../../config";
-import { AsyncWrapper, UserRoles } from "../../utils";
-import { ConfigService } from "../../services";
-import { AuthMiddleware } from "../../middlewares";
+const { AuthController } = require("../../controllers");
+const { AsyncWrapper, UserRoles } = require("../../utils");
+const { ConfigService } = require("../../services");
+const { AuthMiddleware } = require("../../middlewares");
 
-export default router => {
+module.exports = router => {
     const authController = new AuthController();
-    const corsConf = new CorsConfig(ConfigService.get("CORS_WHITELIST"));
 
     router.post(
         "/users",

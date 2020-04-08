@@ -1,7 +1,7 @@
-import AuthController from "./auth.controller";
-import * as contacts from "./contacts.controller";
+const AuthController = require("./auth.controller");
+const contacts = require("./contacts.controller");
 
-export {
+module.exports = {
     contacts,
     AuthController
 };

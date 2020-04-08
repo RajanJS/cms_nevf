@@ -1,13 +1,13 @@
-import { Router } from "express";
-import setContactsV1 from "./contacts";
-import setUsersV1 from "./users";
+const Router = require("express");
+const setContactsV1 = require("./contacts");
+const setUsersV1 = require("./users");
 
 const router = Router();
 
 setContactsV1(router);
 setUsersV1(router);
 
-export const routerV1 = {
+exports.routerV1 = {
     baseUrl: "/api/v1",
     router
 };

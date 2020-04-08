@@ -1,4 +1,4 @@
-export const UserRoles = {
+exports.UserRoles = {
     Admin: 'Admin',
     Normal: 'Normal'
 }
