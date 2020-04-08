@@ -61,6 +61,7 @@
 <script>
 /* eslint-disable */
 import { authService, userService, contactService } from "@/_services";
+import { firebaseAuth } from "@/firebase/firebase.utils.js";
 
 export default {
   name: "Profile",
@@ -124,14 +125,17 @@ export default {
         profileData.email = this.form.email;
         await userService
           .updateUserById(profileData.uid, profileData)
-          .then(() => {
+          .then(async () => {
             this.loading = false;
             this.showToast(
               "success",
               "Success",
               `Profile updated successfully!`
             );
-            this.$router.go(0);
+
+            await authService
+              .updateLocalStorage()
+              .then(() => this.$router.go(0));
           });
       } catch (error) {
         this.loading = false;

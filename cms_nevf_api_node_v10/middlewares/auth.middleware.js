@@ -1,4 +1,5 @@
 const services = require("../services");
+const firebaseService = services.FirebaseService;
 const getAuthToken = (req, res, next) => {
     if (
         req.headers.authorization &&
@@ -12,7 +13,6 @@ const getAuthToken = (req, res, next) => {
 };
 
 const checkIfAuthenticated = (req, res, next) => {
-    let firebaseService = new services.firebaseService();
     return getAuthToken(req, res, async () => {
         try {
             const { authToken } = req;
@@ -48,7 +48,7 @@ const authorize = (roles = []) => {
 
             if (!authToken) throw new Error('You are not authorized to make this request');
 
-            const userInfo = await FirebaseService.admin.auth().verifyIdToken(authToken);
+            const userInfo = await firebaseService.admin.auth().verifyIdToken(authToken);
 
             if (userInfo) {
                 req.authId = userInfo.uid;

@@ -7,7 +7,7 @@ const logger = require('morgan');
 const cors = require("cors");
 const helmet = require("helmet");
 const chalk = require('chalk');
-const errorhandler = require('errorhandler')
+// const errorhandler = require('errorhandler')
 
 module.exports = function (app, config, env) {
   app.set('port', config.app.port);
@@ -16,13 +16,34 @@ module.exports = function (app, config, env) {
   app.use(bodyParser.urlencoded({
     extended: false
   }));
+
   app.use(cors());
   app.use(helmet());
 
 
+
+  /**
+  * register the Express Error Handling middleware
+  */
   if (process.env.NODE_ENV === 'dev') {
     // only use in development
     app.use(errorhandler())
+
+    // app.get("env") === "dev"
+    //   ? app.use(
+    //     ({ statusCode = 500, message, stack }, req, res, next) => {
+    //       res.status(statusCode);
+    //       res.json({
+    //         statusCode,
+    //         message,
+    //         stack
+    //       });
+    //     }
+    //   )
+    //   : app.use(({ statusCode, message }, req, res, next) => {
+    //     res.status(statusCode);
+    //     res.json({ statusCode, message });
+    //   });
   }
 
 
@@ -45,6 +66,7 @@ module.exports = function (app, config, env) {
    * Primary app routes.
    */
   require("../routes")(app, router);
+
   /**
     * Start Express server.
     */

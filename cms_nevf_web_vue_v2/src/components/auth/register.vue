@@ -134,6 +134,7 @@ export default {
             this.$router.push({ name: "Home" });
           })
           .catch(err => {
+            console.log("register -> err", err.response);
             this.loading = false;
             this.feedback = err.response
               ? err.response.data.message

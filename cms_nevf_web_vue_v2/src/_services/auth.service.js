@@ -42,32 +42,37 @@ async function login(email, password) {
 }
 
 async function updateLocalStorage(newUser) {
-
-    if (newUser) {
-        // let token = await firebaseAuth.currentUser.getIdToken();
-        let currentUser = {
-            token: newUser.xa,
-            uid: newUser.uid,
-            email: newUser.email,
-            displayName: newUser.displayName
-        }
-        let userInfo = await apiHelper({
-            method: "get",
-            url: `api/v1/users/${currentUser.uid}`,
-            headers: {
-                Authorization: `Bearer ${currentUser.token}`
+    try {
+        let loggedUser = newUser ? newUser : firebaseAuth.currentUser;
+        if (loggedUser) {
+            let token = await firebaseAuth.currentUser.getIdToken();
+            let currentUser = {
+                token: token,//newUser.xa,
+                uid: loggedUser.uid,
+                email: loggedUser.email,
+                displayName: loggedUser.displayName
             }
-        })
-        if (userInfo.status == 200 && userInfo && userInfo.data && userInfo.data.customClaims) {
-            let userData = userInfo.data;
-            currentUser.role = userData.customClaims.role;
-            currentUser.userId = userData.customClaims.userId;
-            currentUser.firstName = userData.displayName.split(" ")[0];
-            currentUser.lastName = userData.displayName.split(" ")[1];
+            let userInfo = await apiHelper({
+                method: "get",
+                url: `api/v1/users/${currentUser.uid}`,
+                headers: {
+                    Authorization: `Bearer ${currentUser.token}`
+                }
+            })
+            if (userInfo.status == 200 && userInfo && userInfo.data && userInfo.data.customClaims) {
+                let userData = userInfo.data;
+                currentUser.role = userData.customClaims.role;
+                currentUser.userId = userData.customClaims.userId;
+                currentUser.firstName = userData.displayName.split(" ")[0];
+                currentUser.lastName = userData.displayName.split(" ")[1];
+            }
+            await localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            currentUserSubject.next(currentUser);
         }
-        await localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        currentUserSubject.next(currentUser);
+    } catch (error) {
+        logout();
     }
+
 
 }
 

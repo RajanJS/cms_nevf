@@ -97,7 +97,7 @@ export default {
         title: title,
         variant: variant,
         solid: true,
-        "auto-hide-delay": 2000
+        "auto-hide-delay": 3000
       });
     },
     onSubmit(evt) {

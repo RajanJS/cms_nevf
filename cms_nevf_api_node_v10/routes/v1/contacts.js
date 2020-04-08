@@ -1,54 +1,66 @@
 // use aliases to avoid name conflicts
-const { contacts } = require("../../controllers");
+const { ContactsController } = require("../../controllers");
 const { AsyncWrapper, UserRoles } = require("../../utils");
-const { ConfigService } = require("../../services");
 const { AuthMiddleware } = require("../../middlewares");
+const cors = require('cors');
+
+const whitelist = "";
+const corsOptionsDelegate = function (req, callback) {
+    var corsOptions;
+    if (whitelist.indexOf(req.header('Origin')) !== -1) {
+        corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+    } else {
+        corsOptions = { origin: false } // disable CORS for this request
+    }
+    callback(null, corsOptions) // callback expects two parameters: error and options
+}
 
 module.exports = router => {
 
+    const contactsController = new ContactsController();
     // GET /api/v1/contacts
     router.get(
         "/contacts",
-        (res, req, next) => corsConf.setAsyncConfig()(res, req, next),
+        (res, req, next) => cors(corsOptionsDelegate)(res, req, next),
         AuthMiddleware.authorize([UserRoles.Admin, UserRoles.Normal]),
-        AsyncWrapper(contacts.getContacts)
+        AsyncWrapper(contactsController.getContacts.bind(contactsController))
     );
 
     // GET /api/v2/contacts/full
-    // router.get("/contacts/full", AsyncWrapper(contacts.getContacts));
+    // router.get("/contacts/full", AsyncWrapper(contactsController.getContacts.bind(contactsController)));
 
     // GET /api/v1/contacts/:id
     router.get(
         "/contacts/:id",
         AuthMiddleware.authorize([UserRoles.Admin, UserRoles.Normal]),
-        AsyncWrapper(contacts.getContact)
+        AsyncWrapper(contactsController.getContact.bind(contactsController))
     );
 
     // POST /api/v1/contacts
     router.post(
         "/contacts",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(contacts.postContact)
+        AsyncWrapper(contactsController.postContact.bind(contactsController))
     );
 
     // PUT /api/v1/contacts/:id
     router.put(
         "/contacts/:id",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(contacts.putContact)
+        AsyncWrapper(contactsController.putContact.bind(contactsController))
     );
 
     // DELETE /api/v1/contacts/:id
     router.delete(
         "/contacts/:id",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(contacts.deleteContact)
+        AsyncWrapper(contactsController.deleteContact.bind(contactsController))
     );
 
     // DELETE /api/v1/contacts
     router.delete(
         "/contacts",
         AuthMiddleware.authorize([UserRoles.Admin]),
-        AsyncWrapper(contacts.deleteAllContact)
+        AsyncWrapper(contactsController.deleteAllContact.bind(contactsController))
     );
 };

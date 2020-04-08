@@ -212,9 +212,9 @@
         <b-form-select id="input-role" v-model="inviteAs" :options="roles" required></b-form-select>
       </b-form-group>
 
-      <h5>Note:</h5> 
+      <h5>Note:</h5>
       <p>User Name: email address</p>
-      <p>Password: "cms123" will be used for invited user! </p>
+      <p>Password: "cms123" will be used for invited user!</p>
     </b-modal>
   </b-container>
 </template>
@@ -343,7 +343,7 @@ export default {
         title: title,
         variant: variant,
         solid: true,
-        "auto-hide-delay": 2000
+        "auto-hide-delay": 3000
       });
     },
     async getContacts() {

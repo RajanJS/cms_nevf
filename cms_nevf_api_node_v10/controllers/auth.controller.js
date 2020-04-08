@@ -36,7 +36,7 @@ module.exports = function UserAuthController() {
         }
 
         if (uid) {
-            userInfo = await this.userAuthService.getUser(uid);
+            userInfo = await this.userAuthService.getUser(uid, next);
         }
 
         if (!uid & email) {

@@ -5,18 +5,18 @@ import './plugins/bootstrap-vue';
 import App from './App.vue';
 import router from './router';
 import { firebaseAuth } from './firebase/firebase.utils';
-import { authService } from '@/_services';
+// import { authService } from '@/_services';
 
 Vue.config.productionTip = false
 
 let app = null;
 
 // wait for firebase auth to init before creating the app
-firebaseAuth.onAuthStateChanged((user) => {
+firebaseAuth.onAuthStateChanged(() => {
   // init app if not already created
   if (!app) {
     /* update the local storage  */
-    if (user) authService.updateLocalStorage(user);
+    // if (user) authService.updateLocalStorage(user);
     app = new Vue({
       router,
       render: h => h(App)

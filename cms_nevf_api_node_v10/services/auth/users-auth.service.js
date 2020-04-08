@@ -113,7 +113,7 @@ module.exports = function UserAuthService() {
      *
      * @param {object} req
      */
-    this.getUsers = async function (userId) {
+    this.getUsers = async function (userId, next) {
 
         const filteredUsers = [];
         await this.firebaseService.admin.auth().listUsers()
