@@ -1,0 +1,24 @@
+{
+  "apps": [
+    {
+      "name": "API",
+      "script": "node -r esm ./",
+      "instances": 1,
+      "autorestart": true,
+      "env_development": {
+        "NODE_ENV": "development",
+        "CORS_WHITELIST": "",
+        "RATE_LIMIT_MAX_REQUESTS": 100,
+        "RATE_LIMIT_WINDOW_MS": 900000,
+        "GOOGLE_APPLICATION_CREDENTIALS": "./config/cms-nevf-firebase.json"
+      },
+      "env": {
+        "NODE_ENV": "production",
+        "CORS_WHITELIST": "",
+        "RATE_LIMIT_MAX_REQUESTS": 100,
+        "RATE_LIMIT_WINDOW_MS": 900000,
+        "GOOGLE_APPLICATION_CREDENTIALS": "./config/cms-nevf-firebase.json"
+      }
+    }
+  ]
+}
