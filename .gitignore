@@ -39,3 +39,6 @@ typings
 .env
 
 cms-nevf-firebase.json
+
+cms_nevf_api/services/firebase.service.js
+cms_nevf_api/config/cms-nevf-firebase.json
