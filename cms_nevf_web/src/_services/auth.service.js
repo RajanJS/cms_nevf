@@ -63,7 +63,7 @@ async function updateLocalStorage(newUser) {
             currentUser.role = userData.customClaims.role;
             currentUser.userId = userData.customClaims.userId;
             currentUser.firstName = userData.displayName.split(" ")[0];
-            currentUser.LastName = userData.displayName.split(" ")[1];
+            currentUser.lastName = userData.displayName.split(" ")[1];
         }
         await localStorage.setItem('currentUser', JSON.stringify(currentUser));
         currentUserSubject.next(currentUser);

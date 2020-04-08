@@ -13,12 +13,10 @@ let app = null;
 
 // wait for firebase auth to init before creating the app
 firebaseAuth.onAuthStateChanged((user) => {
-
-  /* update the local storage  */
-  authService.updateLocalStorage(user);
-
   // init app if not already created
   if (!app) {
+    /* update the local storage  */
+    if (user) authService.updateLocalStorage(user);
     app = new Vue({
       router,
       render: h => h(App)
