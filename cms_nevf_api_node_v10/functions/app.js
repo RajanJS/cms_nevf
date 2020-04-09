@@ -11,9 +11,6 @@ require('dotenv').config()
 
 const config = require('./config');
 
-const http = require('http');
-
-
 /**
  * Create Express server.
  */
