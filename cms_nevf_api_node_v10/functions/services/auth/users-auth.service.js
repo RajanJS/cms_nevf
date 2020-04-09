@@ -10,29 +10,32 @@ module.exports = function UserAuthService() {
      * @param {*} user
      */
     this.createUser = async function (user) {
-        if (!user || !user.email || !user.password || !user.firstName) throw new Error("Please provide valid user");
-        if (!user.isAdmin && !user.userId) throw new Error("Please provide valid user");
+        try {
+            if (!user || !user.email || !user.password || !user.firstName) throw new Error("Please provide valid user");
+            if (!user.isAdmin && !user.userId) throw new Error("Please provide valid user");
 
-        const usr = user;
-        usr.displayName = `${user.firstName} ${user.lastName}`;
+            const usr = user;
+            usr.displayName = `${user.firstName} ${user.lastName}`;
 
-        const insertedUser = await this.firebaseService.admin.auth().createUser(usr);
-        const customClaims = {
-            role: UserRoles.Normal
-        };
+            const insertedUser = await this.firebaseService.admin.auth().createUser(usr);
+            const customClaims = {
+                role: UserRoles.Normal
+            };
 
-        if (usr.isAdmin) {
-            customClaims.role = UserRoles.Admin;
+            if (usr.isAdmin) {
+                customClaims.role = UserRoles.Admin;
+            }
+
+            if (usr.userId) {
+                customClaims.userId = usr.userId;
+            }
+
+            await this.firebaseService.admin.auth().setCustomUserClaims(insertedUser.uid, customClaims);
+            return insertedUser;
+
+        } catch (error) {
+            return errorHandler(error.message, 400);
         }
-
-        if (usr.userId) {
-            customClaims.userId = usr.userId;
-        }
-
-        await this.firebaseService.admin.auth().setCustomUserClaims(insertedUser.uid, customClaims);
-
-        return insertedUser;
-
     }
 
     /**

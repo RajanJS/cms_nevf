@@ -7,10 +7,20 @@ module.exports = function UserAuthController() {
     this.userAuthService = new UserAuthService();
 
     this.createUser = async function (req, res, next) {
-        const user = await this.userAuthService.createUser(req.body);
-        return res.json({
-            userInfo: user
+        const user = await this.userAuthService.createUser(req.body, next);
+
+        if (user && user.statusCode) {
+            return res.status(user.statusCode).json({
+                message: user.message
+            });
+        }
+
+        return res.status(user ? 200 : 401).json({
+            ...(user
+                ? { userInfo: user }
+                : { message: "Authentication failed" })
         });
+
     };
 
     this.loginUser = async function (req, res, next) {

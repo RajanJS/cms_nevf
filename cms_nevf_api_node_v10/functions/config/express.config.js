@@ -17,7 +17,7 @@ module.exports = function (app, config, env) {
     extended: false
   }));
 
-  app.use(cors());
+  app.use(cors({ origin: true }));
   app.use(helmet());
 
 
@@ -39,7 +39,7 @@ module.exports = function (app, config, env) {
   /**
  * Initial dummy route for testing
  */
-  router.get('/', function (req, res) {
+  router.get('/', (req, res) => {
     res.json({
       message: `OK!`,
     });
