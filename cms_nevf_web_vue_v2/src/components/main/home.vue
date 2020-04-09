@@ -7,7 +7,11 @@
 
       <b-jumbotron header="CMS - NEVF" lead="Contact Management Application">
         <p>This application is a prototype build using (NEVF Stack) Node.js, Express.js, Vue.js and Firebase technology stacks.</p>
-        <b-btn variant="primary" target="_blank" href="https://github.com/RajanJS/cms_nevf">Leare more about the project</b-btn>
+        <b-btn
+          variant="primary"
+          target="_blank"
+          href="https://github.com/RajanJS/cms_nevf"
+        >Leare more about the project</b-btn>
       </b-jumbotron>
 
       <b-row class="pl-3 pt-4 pr-3 pb-4">
@@ -67,7 +71,11 @@ export default {
   },
   computed: {
     isAdmin() {
-      return this.currentUser && this.currentUser.role === Role.Admin;
+      return (
+        this.currentUser &&
+        this.currentUser.role === Role.Admin &&
+        !this.currentUser.userId
+      );
     }
   },
   created: function() {

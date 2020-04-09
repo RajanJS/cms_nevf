@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     isAdmin() {
-      return this.currentUser.role === Role.Admin;
+      return this.currentUser.role === Role.Admin && !this.currentUser.userId;
     },
     getCurrentUserName() {
       return this.$route.params.userName

@@ -63,6 +63,7 @@ async function updateLocalStorage(newUser) {
                 let userData = userInfo.data;
                 currentUser.role = userData.customClaims.role;
                 currentUser.userId = userData.customClaims.userId;
+                currentUser.userId = userData.customClaims.userId;
                 currentUser.firstName = userData.displayName.split(" ")[0];
                 currentUser.lastName = userData.displayName.split(" ")[1];
             }
