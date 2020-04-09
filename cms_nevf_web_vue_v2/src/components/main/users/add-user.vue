@@ -124,7 +124,7 @@ export default {
           firstName: userData.firstName,
           lastName: userData.lastName,
           email: userData.email,
-          isAdmim: userData.inviteAs == Role.Admin ? true : false,
+          isAdmin: userData.inviteAs == Role.Admin ? true : false,
           password: defaultInvitePassword,
           userId: this.currentUser.uid
         };

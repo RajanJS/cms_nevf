@@ -432,7 +432,7 @@ export default {
         firstName: this.infoModal.content.firstName,
         lastName: this.infoModal.content.lastName,
         email: this.infoModal.content.email,
-        isAdmim: this.inviteAs == Role.Admin ? true : false,
+        isAdmin: this.inviteAs == Role.Admin ? true : false,
         password: defaultInvitePassword,
         userId: this.currentUser.uid
       };

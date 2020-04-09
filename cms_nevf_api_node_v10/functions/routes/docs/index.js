@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const { SwaggerMiddleware } = require("../../middlewares");
-console.log("SwaggerMiddleware", SwaggerMiddleware)
 
 const swaggerMiddleware = new SwaggerMiddleware(
     "2.0.0",
