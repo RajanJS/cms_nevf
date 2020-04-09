@@ -434,7 +434,9 @@ export default {
         email: this.infoModal.content.email,
         isAdmin: this.inviteAs == Role.Admin ? true : false,
         password: defaultInvitePassword,
-        userId: this.currentUser.uid
+        userId: this.currentUser.userId
+          ? this.currentUser.userId
+          : this.currentUser.uid // if sub user invites from contant bind the new invited user to amdin user (sub user's admin user)
       };
       try {
         await userService.registerUser(newUserData).then(async () => {
