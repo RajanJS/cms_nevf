@@ -4,7 +4,7 @@
   "description": "Contact Management System Prototype using Node.js, Express.js, Vue.js and Firebase",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development CORS_WHITELIST='' RATE_LIMIT_WINDOW_MS=900000 RATE_LIMIT_MAX_REQUESTS=100 nodemon -r esm .",
+    "start": "pm2-runtime ecosystem.config.json",
     "preinstall": "npm i -g pm2",
     "start:prod": "pm2-runtime ecosystem.config.json",
     "start:dev": "pm2-runtime ecosystem.config.json --env development",

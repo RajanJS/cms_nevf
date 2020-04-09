@@ -29,23 +29,39 @@ What things you need to install the software and how to install them
 
 Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
 
-Backend Folder:
-`cms_nevf_api`
+### Backend Folder:
 
-Frontend Folder:
-`cms_nevf_web`
+`cms_nevf_api_node_v10` (Compatible with Node.js v8 - v10 with function hosting)
+
+`cms_nevf_api_node_v12` (Compatible with Node.js v10+)
+
+### Frontend Folder:
+
+`cms_nevf_web_vue_v2` ( using Vue.js v2 with firebase hosting)
 
 # Usage
 
-### Backendd
+### Backend
 
 ```
     # clone the repo
     $ git clone https://github.com/RajanJS/cms_nevf.git
 
+    ## For "cms_nevf_api_node_v12"
+
     # go into app's directory
-    $ cd cms_nevf/cms_nevf_api/
-    $ cd cms_nevf/cms_nevf_web/
+    $ cd cms_nevf/cms_nevf_api_node_v12/
+
+    # install dependencies
+    npm install
+
+    # serve locally
+    npm start
+
+    ## For "cms_nevf_api_node_v10"
+
+    # go into app's directory
+    $ cd cms_nevf/cms_nevf_api_node_v10/functions
 
     # install dependencies
     npm install
@@ -75,10 +91,6 @@ Frontend Folder:
     # build for production with minification
     npm run build
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Contributing
 

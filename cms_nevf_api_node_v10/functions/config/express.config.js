@@ -28,22 +28,6 @@ module.exports = function (app, config, env) {
   if (process.env.NODE_ENV === 'dev') {
     // only use in development
     app.use(errorhandler())
-
-    // app.get("env") === "dev"
-    //   ? app.use(
-    //     ({ statusCode = 500, message, stack }, req, res, next) => {
-    //       res.status(statusCode);
-    //       res.json({
-    //         statusCode,
-    //         message,
-    //         stack
-    //       });
-    //     }
-    //   )
-    //   : app.use(({ statusCode, message }, req, res, next) => {
-    //     res.status(statusCode);
-    //     res.json({ statusCode, message });
-    //   });
   }
 
 
@@ -65,6 +49,7 @@ module.exports = function (app, config, env) {
    * Register all our routes with baseURL
    * Primary app routes.
    */
+  require("../routes")(app, router);
 
   /**
     * Start Express server.
