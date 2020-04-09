@@ -47,6 +47,7 @@ function headers() {
         headers: {
             ...ids,
             ...authHeader,
+            // 'Access-Control-Allow-Origin': '*'
         }
     }
 }

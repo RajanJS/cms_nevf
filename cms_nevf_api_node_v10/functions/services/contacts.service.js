@@ -41,7 +41,7 @@ module.exports = function ContactsService() {
             limit: limit,
             page: offset,
             totalPages,
-            hasNextPAge: (offset < totalPages) && totalPages != 1,
+            hasNextPAge: (offset < totalPages) && totalPages !== 1,
             hasPrevPage: (offset - 1) >= 0,
             prevPage: (offset - 1) < 0 ? 0 : offset - 1,
             pagingCounter: 1
@@ -55,7 +55,7 @@ module.exports = function ContactsService() {
         const contacts = [];
         const contactRef = await this.dbCollection.where('userId', 'in', filterIds).limit(limit).offset(offset).get()
             .then(snapshot => {
-                snapshot.forEach(doc => {
+                return snapshot.forEach(doc => {
                     contacts.push({
                         id: doc.id,
                         ...doc.data()
@@ -63,7 +63,7 @@ module.exports = function ContactsService() {
                 });
             })
             .catch(err => {
-                return next(errorHandler('Error getting documents'));
+                return next(errorHandler(`Error getting documents ${err.message}`));
             });
 
         return { ...pagination, docs: contacts };

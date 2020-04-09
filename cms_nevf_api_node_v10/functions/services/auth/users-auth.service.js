@@ -118,9 +118,9 @@ module.exports = function UserAuthService() {
         const filteredUsers = [];
         await this.firebaseService.admin.auth().listUsers()
             .then(function (listUsersResult) {
-                listUsersResult.users.forEach(function (userRecord) {
+                return listUsersResult.users.forEach(function (userRecord) {
                     let user = userRecord.toJSON();
-                    if (user.customClaims.userId == userId) filteredUsers.push(user)
+                    if (user.customClaims.userId === userId) filteredUsers.push(user)
                 });
             })
             .catch(function (error) {

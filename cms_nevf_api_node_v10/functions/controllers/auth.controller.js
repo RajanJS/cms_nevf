@@ -24,6 +24,7 @@ module.exports = function UserAuthController() {
                     : { message: "Authentication failed" })
             });
         }
+        return null;
     };
 
     this.getUser = async function (req, res, next) {
@@ -32,7 +33,7 @@ module.exports = function UserAuthController() {
         let userInfo;
 
         if (!uid && !email) {
-            next(errorHandler("Please enter uid or email", 422));
+            return next(errorHandler("Please enter uid or email", 422));
         }
 
         if (uid) {

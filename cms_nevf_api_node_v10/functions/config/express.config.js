@@ -65,7 +65,6 @@ module.exports = function (app, config, env) {
    * Register all our routes with baseURL
    * Primary app routes.
    */
-  require("../routes")(app, router);
 
   /**
     * Start Express server.
