@@ -99,6 +99,10 @@ module.exports = function UserAuthService() {
 
         const userInfo = await this.firebaseService.admin.auth().updateUser(uid, updatedData);
 
+        if (updatedData.customClaims && updatedData.customClaims.role) {
+            await this.firebaseService.admin.auth().setCustomUserClaims(uid, updatedData.customClaims);
+        }
+
         return userInfo;
     }
 
@@ -137,6 +141,5 @@ module.exports = function UserAuthService() {
 
         return filteredUsers;
     }
-
 
 }

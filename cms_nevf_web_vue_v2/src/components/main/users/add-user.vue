@@ -11,7 +11,7 @@
               <b-form-group id="firstName" label="First Name:" label-for="firstName">
                 <b-form-input
                   id="firstName"
-                  v-model="form.firstName"
+                  v-model.trim="form.firstName"
                   required
                   placeholder="Enter first name"
                 ></b-form-input>
@@ -20,7 +20,7 @@
               <b-form-group id="lastName" label="Last Name:" label-for="lastName">
                 <b-form-input
                   id="lastName"
-                  v-model="form.lastName"
+                  v-model.trim="form.lastName"
                   required
                   placeholder="Enter last name"
                 ></b-form-input>
@@ -29,7 +29,7 @@
               <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
                 <b-form-input
                   id="input-1"
-                  v-model="form.email"
+                  v-model.trim="form.email"
                   type="email"
                   required
                   placeholder="Enter email"
@@ -75,7 +75,6 @@ export default {
         firstName: "",
         lastName: "",
         email: null,
-        phoneNumber: null,
         inviteAs: Role.Normal
       },
       loading: false,
@@ -114,6 +113,7 @@ export default {
       this.form.firstName = "";
       this.form.lastName = "";
       this.form.email = null;
+      this.form.inviteAs = Role.Normal;
     },
     async addUser(userData) {
       try {

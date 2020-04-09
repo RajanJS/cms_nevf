@@ -11,7 +11,7 @@
               <b-form-group id="firstName" label="First Name:" label-for="firstName">
                 <b-form-input
                   id="firstName"
-                  v-model="form.firstName"
+                  v-model.trim="form.firstName"
                   required
                   placeholder="Enter first name"
                 ></b-form-input>
@@ -20,7 +20,7 @@
               <b-form-group id="lastName" label="Last Name:" label-for="lastName">
                 <b-form-input
                   id="lastName"
-                  v-model="form.lastName"
+                  v-model.trim="form.lastName"
                   required
                   placeholder="Enter last name"
                 ></b-form-input>
@@ -29,11 +29,14 @@
               <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
                 <b-form-input
                   id="input-1"
-                  v-model="form.email"
+                  v-model.trim="form.email"
                   type="email"
                   required
                   placeholder="Enter email"
                 ></b-form-input>
+              </b-form-group>
+              <b-form-group id="input-role" label="Create As:" label-for="input-role">
+                <b-form-select id="input-role" v-model="form.inviteAs" :options="roles" required></b-form-select>
               </b-form-group>
 
               <p v-if="feedback" class="text-danger text-center pt-2">{{ feedback }}</p>
@@ -62,16 +65,19 @@
 <script>
 /* eslint-disable */
 import { authService, userService } from "@/_services";
+import { Role } from "@/_helpers";
 
 export default {
   name: "EditContact",
   data() {
     return {
       params: ["id"],
+      roles: [{ text: "Select Role", value: null }, Role.Admin, Role.Normal],
       form: {
         firstName: "",
         lastName: "",
-        email: null
+        email: null,
+        inviteAs: Role.Normal
       },
       user: null,
       loading: false,
@@ -95,7 +101,12 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       let userData = this.form;
-      if (!userData.firstName || !userData.lastName || !userData.email) {
+      if (
+        !userData.firstName ||
+        !userData.lastName ||
+        !userData.email ||
+        !userData.inviteAs
+      ) {
         return (this.feedback = "Please submit valid data");
       }
       this.editUser(userData);
@@ -106,6 +117,7 @@ export default {
       this.form.firstName = "";
       this.form.lastName = "";
       this.form.email = null;
+      this.form.inviteAs = Role.Normal;
     },
     async getUser() {
       try {
@@ -115,6 +127,7 @@ export default {
           this.form.firstName = userData.displayName.split(" ")[0];
           this.form.lastName = userData.displayName.split(" ")[1];
           this.form.email = userData.email;
+          this.form.isAdmin = userData.customClaims.role;
         });
       } catch (error) {
         let errorMsg =
@@ -133,6 +146,10 @@ export default {
 
         newUserData.displayName = `${this.form.firstName} ${this.form.lastName}`;
         newUserData.email = this.form.email;
+        newUserData.customClaims = this.user.customClaims
+          ? this.user.customClaims
+          : {};
+        newUserData.customClaims.role = this.form.inviteAs;
 
         await userService
           .updateUserById(this.$route.params.id, newUserData)
