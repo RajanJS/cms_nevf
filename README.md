@@ -47,17 +47,6 @@ Within the download you'll find the following directories and files, logically g
     # clone the repo
     $ git clone https://github.com/RajanJS/cms_nevf.git
 
-    ## For "cms_nevf_api_node_v12"
-
-    # go into app's directory
-    $ cd cms_nevf/cms_nevf_api_node_v12/
-
-    # install dependencies
-    npm install
-
-    # serve locally
-    npm start
-
     ## For "cms_nevf_api_node_v10"
 
     # go into app's directory
@@ -69,9 +58,40 @@ Within the download you'll find the following directories and files, logically g
     # serve locally
     npm start
 
+    ## For "cms_nevf_api_node_v12"
+
+    # go into app's directory
+    $ cd cms_nevf/cms_nevf_api_node_v12/
+
+    # install dependencies
+    npm install
+
+    # serve locally
+    npm start
+
+
+NOTE:
+
+For local start you have to add the google account service credentials;
+
+# For functions project (cms_nevf_api_node_v10);
+cms_nevf/cms_nevf_api_node_v10/functions/config/[adminServiceAccount].json
+cms_nevf/cms_nevf_api_node_v10/functions/config/[clientServiceAccount].json
+
+# For functions project (cms_nevf_api_node_v12);
+cms_nevf/cms_nevf_api_node_v12/config/[adminServiceAccount].json
+cms_nevf/cms_nevf_api_node_v12/config/[clientServiceAccount].json
 ```
 
-> ### Note: API Swagger Doc [URL]/api/docs/v1/
+> ### Note:
+>
+> API Swagger Doc [URL]/api/docs/v1/
+>
+> Swagger Doc Prototype: [Contact API Doc Sample](https://us-central1-cms-nevf.cloudfunctions.net/app)
+>
+> You can get Client Service account credentials form [Firebase Console](https://console.firebase.google.com/) for clientServiceAccount.json (firebaseConfig)
+>
+> You can get Admin Service account credentials form [Firebase Admin SDK](https://firebase.google.com/docs/admin/setup) for adminServiceAccount.json
 
 ### Frontend
 
