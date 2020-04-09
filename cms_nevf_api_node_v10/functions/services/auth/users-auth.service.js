@@ -11,8 +11,8 @@ module.exports = function UserAuthService() {
      */
     this.createUser = async function (user) {
         try {
-            // if (!user || !user.email || !user.password || !user.firstName) throw new Error("Please provide valid user");
-            // if (!user.isAdmin && !user.userId) throw new Error("Please provide valid user");
+            if (!user || !user.email || !user.password || !user.firstName) throw new Error("Please provide valid user");
+            if (!user.isAdmin && !user.userId) throw new Error("Please provide valid user");
 
             const usr = user;
             usr.displayName = `${user.firstName} ${user.lastName}`;
